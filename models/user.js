@@ -17,6 +17,16 @@ const userSchema = mongoose.Schema({
         type: [Number],  // [<longitude>, <latitude>]
         index: '2d'      // create the geospatial index
     },
+    profileType: {
+        type: String,
+        default: "Parent"
+    },
+    schoolName: String,
+    teacherSub: String,
+    
+        sname: String,
+        standard: String,
+        class: String
 })
 
 const User = mongoose.model('User', userSchema);

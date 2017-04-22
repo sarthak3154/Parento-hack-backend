@@ -10,6 +10,7 @@ const session = require('express-session');
 const expressValidator = require('express-validator');
 
 const userRoutes = require('./routes/user')
+const apiRoutes = require('./routes/api');
 const app = express()
 
 /**
@@ -44,7 +45,7 @@ app.use(session({
 
 app.use(flash());
 app.use('/v1', userRoutes)
-
+app.use('/v1/api', apiRoutes);
 app.listen(app.get('port'), function(){
   console.log('App is running on %d', app.get('port'))
   console.log('Press CTRL-C to stop\n')

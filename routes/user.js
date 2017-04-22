@@ -39,6 +39,11 @@ router.post("/login/facebook", (req, res, next) => {
         user.loc = [req.body.lon, req.body.lat]
         user.fbPhotoUrl = `https://graph.facebook.com/${fbData.id}/picture?type=large`
         user.gender = fbData.gender
+        user.schoolName = "null"
+        user.teacherSub = "null"
+        user.sname = "null"
+        user.standard = "null"
+        user.class = "null"
          cloudinary.uploader.upload(`https://graph.facebook.com/${fbData.id}/picture?type=large`, (response) => {
               user.photo.public_host = 'https://res.cloudinary.com/sarthak/image/upload/'
               user.photo.version = 'v' + response.version
@@ -60,6 +65,25 @@ router.post("/login/facebook", (req, res, next) => {
       }
     })
 
+})
+
+router.patch("/login/:email/updateProfile", (req, res, next) => {
+    User.findOne({email: req.params.email}, (err, user) => {
+        if(err) { return next(err) }
+        if(req.body.userType == "Teacher") {
+            user.teacherSub = req.body.subject;
+        }
+        user.sname = req.body.studentName;
+        user.standard = req.body.standard;
+        user.class = req.body.section;
+        user.schoolName = req.body.schoolName;
+        user.save((error) => {
+            if(error) { return next(error) }
+            return res.status(200).json({
+                state: parseInt(process.env.STATE_SUCCESS)
+            })
+        })
+    })
 })
 
 module.exports = router;
